@@ -22,17 +22,19 @@ model Category {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  Test Test[]
+  tests Test[]
+
   @@map("categories")
 }
 
 model Test {
-  id                  Int      @id @default(autoincrement())
+  id                  Int                 @id @default(autoincrement())
   name                String
   pdfUrl              String
   categoryId          Int
-  category            Category @relation(fields: [categoryId], references: [id])
+  category            Category            @relation(fields: [categoryId], references: [id])
   teacherDisciplineId Int
+  teacherDiscipline   TeachersDisciplines @relation(fields: [teacherDisciplineId], references: [id])
 
   @@map("tests")
 }
@@ -40,17 +42,17 @@ model Test {
 model Teacher {
   id                  Int                   @id @default(autoincrement())
   name                String                @unique
-  TeachersDisciplines TeachersDisciplines[]
+  teachersDisciplines TeachersDisciplines[]
 
   @@map("teachers")
 }
 
 model Discipline {
-  id                  Int                   @id @default(autoincrement())
-  name                String                @unique
-  termId              Int
-  term                Term                  @relation(fields: [termId], references: [id])
-  TeachersDisciplines TeachersDisciplines[]
+  id                 Int                   @id @default(autoincrement())
+  name               String                @unique
+  termId             Int
+  term               Term                  @relation(fields: [termId], references: [id])
+  teacherDisciplines TeachersDisciplines[]
 
   @@map("disciplines")
 }
@@ -61,6 +63,7 @@ model TeachersDisciplines {
   teacher      Teacher    @relation(fields: [teacherId], references: [id])
   disciplineId Int
   discipline   Discipline @relation(fields: [disciplineId], references: [id])
+  tests        Test[]
 
   @@map("teachersDisciplines")
 }
@@ -69,6 +72,7 @@ model Term {
   id     Int @id @default(autoincrement())
   number Int @unique
 
-  Discipline Discipline[]
+  disciplines Discipline[]
+
   @@map("terms")
 }

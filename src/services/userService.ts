@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import * as userRepository from "../repositories/userRepository.js";
-import { notFoundError, unauthorizedError } from "../utils/errorUtil.js";
+import { unauthorizedError } from "../utils/errorUtil.js";
 
 dotenv.config();
 
@@ -14,12 +14,11 @@ export async function signUp(data: userRepository.CreateUserData) {
 
   const encryptedPassword = encryptPassword(data.password);
 
-  await userRepository.create({ ...data, password: encryptedPassword });
+  await userRepository.insert({ ...data, password: encryptedPassword });
 }
 
 export async function signIn(data: userRepository.CreateUserData) {
   const user = await userRepository.findByEmail(data.email);
-  console.log(user);
   if (!user || !isCorrectPassword(data.password, user.password)) {
     throw unauthorizedError("Credentials are not valid!");
   }
