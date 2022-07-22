@@ -18,11 +18,8 @@ describe("Running tests test suit", () => {
     const { token } = tokenResponse.body;
 
     const testInfo = testFactory.createTestInfo();
-    const testResponse = await supertest(app)
-      .post("/tests")
-      .send(testInfo)
-      .set("Authorization", `Bearer ${token}`);
-    expect(testResponse.statusCode).toBe(201);
+    const createTestResponse = await testFactory.createTest(testInfo, token);
+    expect(createTestResponse.statusCode).toBe(201);
 
     const createdTest = await prisma.test.findFirst({
       where: {
@@ -42,11 +39,8 @@ describe("Running tests test suit", () => {
 
     const wrongCategoryId = 4;
     const testInfo = testFactory.createTestInfo(wrongCategoryId);
-    const testResponse = await supertest(app)
-      .post("/tests")
-      .send(testInfo)
-      .set("Authorization", `Bearer ${token}`);
-    expect(testResponse.statusCode).toBe(404);
+    const createTestResponse = await testFactory.createTest(testInfo, token);
+    expect(createTestResponse.statusCode).toBe(404);
   });
 
   it("given wrong or nonexistent teacherId return code 404 on test creation", async () => {
@@ -62,11 +56,8 @@ describe("Running tests test suit", () => {
       wrongTeacherId,
       undefined
     );
-    const testResponse = await supertest(app)
-      .post("/tests")
-      .send(testInfo)
-      .set("Authorization", `Bearer ${token}`);
-    expect(testResponse.statusCode).toBe(404);
+    const createTestResponse = await testFactory.createTest(testInfo, token);
+    expect(createTestResponse.statusCode).toBe(404);
   });
 
   it("given wrong or nonexistent disciplineId return code 404 on test creation", async () => {
@@ -97,15 +88,32 @@ describe("Running tests test suit", () => {
     const { token } = tokenResponse.body;
 
     const testInfo = testFactory.createTestInfo();
-    const createTestResponse = await supertest(app)
-      .post("/tests")
-      .send(testInfo)
-      .set("Authorization", `Bearer ${token}`);
+    const createTestResponse = await testFactory.createTest(testInfo, token);
     expect(createTestResponse.statusCode).toBe(201);
 
-    const getTestsResponse = await supertest(app)
-      .get("/tests?groupBy=disciplines")
-      .set("Authorization", `Bearer ${token}`);
+    const getTestsResponse = await testFactory.getTestsByQuery(
+      "disciplines",
+      token
+    );
+    expect(getTestsResponse.body).not.toBeNull();
+    expect(getTestsResponse.statusCode).toBe(200);
+  });
+
+  it("given disciplines as query parameter return tests by discipline", async () => {
+    const userInfo = userFactory.createUserInfo();
+    await userFactory.createUser(userInfo);
+
+    const tokenResponse = await supertest(app).post("/sign-in").send(userInfo);
+    const { token } = tokenResponse.body;
+
+    const testInfo = testFactory.createTestInfo();
+    const createTestResponse = await testFactory.createTest(testInfo, token);
+    expect(createTestResponse.statusCode).toBe(201);
+
+    const getTestsResponse = await testFactory.getTestsByQuery(
+      "teachers",
+      token
+    );
     expect(getTestsResponse.body).not.toBeNull();
     expect(getTestsResponse.statusCode).toBe(200);
   });

@@ -10,7 +10,7 @@ export interface InputTestData {
   disciplineId: number;
 }
 
-type Query = "disciplines" | "teachers";
+export type Query = "disciplines" | "teachers";
 
 export async function createTest(data: InputTestData) {
   const category = await categoryRepository.findOneCategory(data.categoryId);
