@@ -11,7 +11,7 @@
     "test": "dotenv -e .env.test prisma migrate dev && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .ent.test jest ./tests/tests.test.ts -i"
   },
   "prisma": {
-    "seed": "ts-node ./prisma/seed.ts"
+    "seed": "ts-node ../prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
