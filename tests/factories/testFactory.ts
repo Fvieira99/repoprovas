@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app from "../../src/app/app.js";
 
-import { Query, InputTestData } from "../../src/services/testService.js";
+import { InputTestData } from "../../src/services/testService.js";
 
 export function createTestInfo(
   categoryId = 1,
@@ -19,7 +19,7 @@ export function createTestInfo(
   };
 }
 
-export async function getTestsByQuery(query: Query, token: string) {
+export async function getTestsByQuery(query: string, token: string) {
   return await supertest(app)
     .get(`/tests?groupBy=${query}`)
     .set("Authorization", `Bearer ${token}`);

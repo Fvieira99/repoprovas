@@ -99,7 +99,7 @@ describe("Running tests test suit", () => {
     expect(getTestsResponse.statusCode).toBe(200);
   });
 
-  it("given disciplines as query parameter return tests by discipline", async () => {
+  it("given teachers as query parameter return tests by teacher", async () => {
     const userInfo = userFactory.createUserInfo();
     await userFactory.createUser(userInfo);
 
@@ -116,6 +116,21 @@ describe("Running tests test suit", () => {
     );
     expect(getTestsResponse.body).not.toBeNull();
     expect(getTestsResponse.statusCode).toBe(200);
+  });
+
+  it("given empty or wrong query parameter return code 400.", async () => {
+    const userInfo = userFactory.createUserInfo();
+    await userFactory.createUser(userInfo);
+
+    const tokenResponse = await supertest(app).post("/sign-in").send(userInfo);
+    const { token } = tokenResponse.body;
+
+    const testInfo = testFactory.createTestInfo();
+    const createTestResponse = await testFactory.createTest(testInfo, token);
+    expect(createTestResponse.statusCode).toBe(201);
+
+    const getTestsResponse = await testFactory.getTestsByQuery("", token);
+    expect(getTestsResponse.statusCode).toBe(400);
   });
 });
 

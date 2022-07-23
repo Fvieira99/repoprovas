@@ -38,10 +38,10 @@ export async function createTest(data: InputTestData) {
 export async function getTestsByQuery(query: Query) {
   if (query === "disciplines") {
     const tests = await testRepository.findByDiscipline();
-    return { tests };
+    return { terms: tests };
   }
   if (query === "teachers") {
     const tests = await testRepository.findByTeacher();
-    return { tests };
+    return { teachersDisciplines: tests };
   }
 }
