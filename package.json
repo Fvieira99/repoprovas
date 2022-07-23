@@ -11,7 +11,7 @@
     "test": "dotenv -e .env.test prisma migrate dev && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .ent.test jest ./tests/tests.test.ts -i"
   },
   "prisma": {
-    "seed": "ts-node ./prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,8 @@
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "joi": "^17.6.0",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "ts-node": "^10.8.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
@@ -45,7 +46,6 @@
     "prisma": "^4.0.0",
     "supertest": "^6.2.4",
     "ts-jest": "^28.0.7",
-    "ts-node": "^10.8.2",
     "typecript": "^0.0.1-security",
     "typescript": "^4.7.4"
   }
