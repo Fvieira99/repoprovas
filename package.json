@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc src/index.ts",
-    "start": "node src/index.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "dotenv -e .env.test prisma migrate dev && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .ent.test jest ./tests/tests.test.ts -i"
   },
   "prisma": {
