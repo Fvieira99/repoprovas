@@ -4,9 +4,9 @@ import { User } from ".prisma/client";
 export type CreateUserData = Omit<User, "id">;
 
 export async function insert(data: CreateUserData) {
-  await prisma.user.create({ data });
+    await prisma.user.create({ data });
 }
 
 export async function findByEmail(email: string) {
-  return await prisma.user.findUnique({ where: { email } });
+    return await prisma.user.findUnique({ where: { email } });
 }

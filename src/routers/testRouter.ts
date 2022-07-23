@@ -6,12 +6,7 @@ import testSchema from "../schemas/testSchema.js";
 
 const testRouter = Router();
 
-testRouter.post(
-  "/tests",
-  validateToken,
-  validateSchema(testSchema),
-  createTest
-);
+testRouter.post("/tests", validateToken, validateSchema(testSchema), createTest);
 
 testRouter.get("/tests", validateToken, getTestsByQuery);
 
